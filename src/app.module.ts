@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigType } from '@nestjs/config';
 import { typeormConfig } from './commom/config/typeorm.config';
+import { MoviesModule } from './movies/movies.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { typeormConfig } from './commom/config/typeorm.config';
       useFactory: async (config: ConfigType<typeof typeormConfig>) => config,
     }),
     UserModule,
+    MoviesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

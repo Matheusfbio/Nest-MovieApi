@@ -26,7 +26,7 @@ export const typeormConfig = registerAs(
       type: 'postgres',
       url: process.env.DATABASE_URL
         ? process.env.DATABASE_URL
-        : 'postgresql://postgres:Alegri@18@localhost:5432/NestServices',
+        : 'postgresql://postgres:Alegri@18@localhost:5432/MovieDB',
       migrationsRun:
         'string' === typeof process.env.DATABASE_MIGRATIONS_RUN
           ? process.env.DATABASE_MIGRATIONS_RUN === 'true'

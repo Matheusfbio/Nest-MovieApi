@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, Unique } from 'typeorm';
+import { Column, Entity, Unique } from 'typeorm';
 import { UserInterface } from '../interfaces';
 import { CommonEntity } from 'src/commom/commom.entity';
 
@@ -26,7 +26,4 @@ export class User extends CommonEntity implements UserInterface {
 
   @Column({ default: true, nullable: false })
   active!: boolean;
-
-  // @OneToMany(() => UseRole, (useRole) => userRole.user)
-  // userRoles?: UserRole[];
 }
