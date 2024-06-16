@@ -1,6 +1,6 @@
 export interface MovieCreatableInterface {
   title: string;
   director: string;
-  releaseDate: Date;
+  releaseDate: string;
   genre: string;
 }

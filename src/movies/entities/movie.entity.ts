@@ -1,24 +1,23 @@
 import { MovieCommomEntity } from 'src/commom/movie-commom.entity';
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { MovieInterface } from '../interfaces';
-import { IsDate } from 'class-validator';
+import { IsDate, IsDateString, IsString } from 'class-validator';
 
 @Entity()
-@Unique(['title'])
-export class Movie implements MovieInterface {
-  @PrimaryGeneratedColumn()
-  id: string;
-
-  @Column({ type: 'citext', nullable: false })
+export class Movie extends MovieCommomEntity implements MovieInterface {
+  @Column()
+  @IsString()
   title!: string;
 
-  @Column({ type: 'citext', nullable: false })
+  @Column()
+  @IsString()
   director!: string;
 
-  @Column({ type: 'date', nullable: false })
-  @IsDate()
-  releaseDate!: Date;
+  @Column()
+  @IsString()
+  releaseDate!: string;
 
-  @Column({ type: 'citext', nullable: false })
+  @Column()
+  @IsString()
   genre!: string;
 }

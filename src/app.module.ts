@@ -1,23 +1,22 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigType } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigType } from '@nestjs/config';
-import { typeormConfig } from './commom/config/typeorm.config';
 import { MoviesModule } from './movies/movies.module';
+import { typeormConfig } from './commom/config/typeorm.config';
+import sampleConfig from './commom/config/sample.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [typeormConfig],
+      load: [typeormConfig, sampleConfig],
     }),
     TypeOrmModule.forRootAsync({
       inject: [typeormConfig.KEY],
       useFactory: async (config: ConfigType<typeof typeormConfig>) => config,
     }),
-    UserModule,
     MoviesModule,
   ],
   controllers: [AppController],

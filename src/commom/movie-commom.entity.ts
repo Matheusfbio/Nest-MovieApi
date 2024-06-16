@@ -4,22 +4,17 @@ import { MovieCommonEntityInterface } from './interfaces/movie-common-entity.int
 
 export abstract class MovieCommomEntity implements MovieCommonEntityInterface {
   @PrimaryGeneratedColumn('uuid')
-  @ApiProperty()
   id!: string;
 
-  @CreateDateColumn()
   @ApiProperty()
   title!: string;
 
-  @CreateDateColumn()
   @ApiProperty()
   director!: string;
 
-  @CreateDateColumn()
   @ApiProperty()
-  releaseDate!: Date;
+  releaseDate!: string;
 
-  @CreateDateColumn()
   @ApiProperty()
   genre!: string;
 }

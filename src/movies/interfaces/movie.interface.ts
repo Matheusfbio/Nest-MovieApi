@@ -1,7 +1,8 @@
-export interface MovieInterface {
-  id: string;
+import { MovieCommonEntityInterface } from 'src/commom/interfaces/movie-common-entity.interface';
+
+export interface MovieInterface extends MovieCommonEntityInterface {
   title: string;
   director: string;
-  releaseDate: Date;
+  releaseDate: string;
   genre: string;
 }

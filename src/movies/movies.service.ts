@@ -17,10 +17,35 @@ import { UpdateMovieDto } from './dto/update-movie.dto';
 @Injectable()
 export class MoviesService {
   constructor(
-    @InjectRepository(Movie) private moviesRepository: Repository<Movie>,
+    @InjectRepository(Movie)
+    private readonly moviesRepository: Repository<Movie>,
   ) {}
 
-  private movies: Movie[] = [];
+  public async create(createMovieDto: CreateMovieDto): Promise<MovieDto> {
+    try {
+      // Crie um novo objeto Movie com releaseDate como instância de Date
+      const movie: Movie = this.moviesRepository.create({
+        ...createMovieDto,
+      });
+
+      // Salve o objeto Movie no banco de dados
+      const dbMovie = await this.moviesRepository.save(movie);
+
+      // Converta o objeto salvo para DTO usando plainToInstance
+      return plainToInstance(MovieDto, dbMovie);
+    } catch (error) {
+      console.error('Error trying to create a new movie', error);
+
+      // Lança uma exceção específica caso ocorra um erro ao salvar no banco de dados
+      if (error.code === 'ER_DUP_ENTRY') {
+        throw new InternalServerErrorException('Movie already exists');
+      } else if (error instanceof InternalServerErrorException) {
+        throw error; // Repassa exceções já tratadas internamente
+      } else {
+        throw new InternalServerErrorException('Failed to create movie');
+      }
+    }
+  }
 
   public async findAll(): Promise<MovieDto[]> {
     const movie = await this.moviesRepository.find({});
@@ -35,12 +60,6 @@ export class MoviesService {
       throw new NotFoundException(`Movie with ID ${id} not found`);
     }
     return movie;
-  }
-
-  public async create(createMovie: CreateMovieDto): Promise<MovieDto> {
-    const movie = this.moviesRepository.create(createMovie);
-    const dbMovie = await this.moviesRepository.save(movie);
-    return plainToInstance(MovieDto, dbMovie);
   }
 
   async update(id: string, updateMovieDto: UpdateMovieDto): Promise<Movie> {

@@ -7,15 +7,19 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
-import { MoviesService } from './movies.service';
 import { Movie } from './entities/movie.entity';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOkResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { MovieDto } from './dto/movie.dto';
-import { IsUUIDParam } from 'src/commom/decorators/is-uuidparam/is-uuidparam.decorator';
 import { UpdateMovieDto } from './dto/update-movie.dto';
+import { MoviesService } from './movies.service';
 
-@ApiTags('movies')
+@ApiTags('Movies')
 @Controller('movies')
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
@@ -32,15 +36,17 @@ export class MoviesController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new movie' })
-  @ApiBody({ description: 'Data of the new movie', type: CreateMovieDto })
   @ApiResponse({ status: 201, description: 'Movie create sucessfully.' })
+  @ApiOkResponse({
+    description: 'Success movie created',
+  })
   async create(@Body() createMovieDto: CreateMovieDto): Promise<MovieDto> {
     return await this.moviesService.create(createMovieDto);
   }
 
   @Put(':id')
   async update(
-    @IsUUIDParam('id') id: string,
+    @Param('id') id: string,
     @Body() updateMovieDto: UpdateMovieDto,
   ): Promise<MovieDto> {
     return await this.moviesService.update(id, updateMovieDto);

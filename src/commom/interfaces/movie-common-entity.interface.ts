@@ -2,6 +2,6 @@ export interface MovieCommonEntityInterface {
   id: string;
   title: string;
   director: string;
-  releaseDate: Date;
+  releaseDate: string;
   genre: string;
 }
