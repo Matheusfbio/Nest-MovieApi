@@ -6,6 +6,8 @@ import {
   Body,
   Put,
   Delete,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { Movie } from './entities/movie.entity';
 import {
@@ -48,12 +50,20 @@ export class MoviesController {
   async update(
     @Param('id') id: string,
     @Body() updateMovieDto: UpdateMovieDto,
-  ): Promise<MovieDto> {
-    return await this.moviesService.update(id, updateMovieDto);
+  ): Promise<{ message: string; updatedMovie: MovieDto }> {
+    const updatedMovie = await this.moviesService.update(id, updateMovieDto);
+    if (!updatedMovie) {
+      throw new HttpException('Movie not found', HttpStatus.NOT_FOUND);
+    }
+    return {
+      message: 'Movie updated successfully',
+      updatedMovie,
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): void {
-    this.moviesService.remove(id);
+  async deleteUser(@Param('id') id: string) {
+    const deleted = await this.moviesService.remove(id);
+    return { message: 'OK' };
   }
 }
